@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+
+	</head>
+	<body>
+		<h1>Hello</h1>
+		<div id="rateYo">
+		</div>
+		<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+	</body>
+	<script>
+		$(function () {
+ 
+		  $("#rateYo").rateYo({
+		    normalFill: "#A0A0A0"
+
+		  });
+		   $("#rateYo").rateYo()
+              .on("rateyo.set", function (e, data) {
+ 
+                var rating = data.rating;
+                console.log(rating);
+                $(this).next().text(rating);
+              });
+});
+ 
+	</script>
+	</html>
+
+
+
+	
