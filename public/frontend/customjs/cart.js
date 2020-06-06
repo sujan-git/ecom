@@ -1,7 +1,6 @@
 $(document).ready(function(){
 	$('.js-addcart-detail').on('click',function(e){
 		e.preventDefault();
-		console.log('here');
 		var id = $('.js-addcart-detail').attr('data-id');
 		var quantity = $('#quantity').val();
 		console.log(id, quantity);
@@ -20,7 +19,7 @@ $(document).ready(function(){
 				        	});
 				        });*/
 				        var nameProduct = data.data.current_item.name;
-				        swal(nameProduct, "is added to cart !", "success");
+				        
 				        /*
 				        <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-img">
@@ -38,8 +37,8 @@ $(document).ready(function(){
                         </div>
                     </li>
 				        */
+				       // debugger;
 				        if(data.data.cart){
-				        	//alert('here');
 				        	var html = '';
 				        	var qty = 0;
 				        	var total_amount = 0;
@@ -57,9 +56,10 @@ $(document).ready(function(){
 					        })
 					        $('.icon-header-noti').attr('data-notify',qty);
 					        $('.header-cart-total').html('Total: Rs '+total_amount);
-				        	$('.header-cart-wrapitem').html(html);
-
+				        	$('.header-cart-wrapitem').append(html);
+				        	swal(nameProduct, "is added to cart !", "success");
 				        }
+				        
 				        
 					}else{
 						swal("Unable to add to cart!");

@@ -18,7 +18,8 @@ class CartContoller extends Controller
     }
 
     public function addToCart(Request $request){        //storre cart in session//
-       // session()->flush('cart');
+       //session()->flush('cart');
+        //dd($request->quantity);
         $this->product = $this->product->find($request->id);
         $quantity = $request->quantity;
         
@@ -111,66 +112,24 @@ class CartContoller extends Controller
         // $request->session()->push('cart',$cart);
 
         //return response()->json(session());
-
+       // dd(session('cart'));
         return response()->json(['status'=>true, 'msg' => 'Cart created successfully.', 'data' =>['current_item'=>$current_item,'cart'=>session('cart')]]);
 
                
     }
 
-    public function addToCart_(Request $request){
-       // dd(Auth::user()->id);
-        $data = $request->except(['_token']);
-        //dd($data);
-        if(!Auth::user()){
-           return response()->json(['status'=>false, 'msg' => 'Please Login To Continue.', 'data' =>null]); 
-        }
-        $this->product = $this->product->find($request->id);
-            //dd($this->product);
-        
-        if(!$this->product){
-            return response()->json(['status'=>false,'msg'=>'Product Not found.','data' => null]);
-        }
-        $cart_info = $this->cart->getCartByUserId(Auth::user()->id);
-        //dd($cart_info);
-        $data['quantity'] = $request->quantity;
-        if( $cart_info!= null){
-            $index = null;
-            foreach($cart_info as $key=>$cart){
-                if($request->id == $cart->product_id){
-                    //dd('here');
-                    $data['quantity'] = $data['quantity'] + $cart->quantity;
-                    $this->cart = $this->cart->getParticularCart(Auth::user()->id, $request->id);
-                    //dd($this->cart);
-                    break;
-                }
-            }
-        }
+   public function updateCart(Request $request){
+        /*Update Session Info*/
+        $cart = session('cart');
+        $cart[$request->index]['quantity'] = $request->quantity;
+        $cart[$request->index]['total_amount'] = ($request->quantity) * ($cart[$request->index]['price']);
+        session(['cart'=>$cart]);
+        /*Update Session Info*/
 
-        if($this->product->is_discountable == 'yes'){
-            $price = $this->product->price - $this->product->discount_price;
-        }else{
-            $price = $this->product->price;
-        }
-        
-        
-        $data['user_id']  = Auth::user()->id;//saomething;
-        $data['product_id'] = $this->product->id;
-        $data['image'] =  asset('/uploads/productimage/'.$this->product->thumb_image);;
-        $data['name'] = $this->product->name;
-        //$data['quantity = $quantity;
-        $data['price']  = $price; 
-        $data['total_amount'] = $data['quantity'] * $price;
-        //dd($this->cart);
-        $this->cart->fill($data);
-         $succ = $this->cart->save();
-         
+        /*Database Cart Update*/
+        /*Database Cart Update*/
 
-        //return json; */
-         if($succ){
-            $msg = 'Cart Created successfully';
-        }else{
-            $msg  = 'Problem While Creating Cart';
-        }    
-        return response()->json(['status'=>true, 'msg' => $msg, 'data' => ['cart'=>$this->cart]]); 
-    }
+        return response()->json(['success' => true, 'message' => 'Cart Updated', 'cart'=>$cart]);
+
+   }
 }

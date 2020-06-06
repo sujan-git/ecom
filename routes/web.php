@@ -28,6 +28,8 @@ Route::get('/contact', 'FrontendController@contact')->name('contact');
 Route::post('/contact', 'ContactController@sendMail')->name('contact-send');
 Route::get('/blog', 'FrontendController@blog')->name('blog');
 Route::get('/about', 'FrontendController@about')->name('about');
+Route::get('/cart', 'FrontendController@showCart')->name('view-cart');
+Route::get('/search', 'FrontendController@getSearchResults')->name('search');
 
 
 
@@ -70,6 +72,7 @@ Route::group(['prefix'=>'admin','middleware'=>['auth','admin']],function(){
 });
 
 Route::any('/add/cart/{id}/{quantity}','CartContoller@addToCart')->name('add-cart');
+Route::get('/update/cart/','CartContoller@updateCart')->name('add-cart');
 //Route::get('/getcartjson','FrontendContoller@getCartJson')->name('cart-json');
 Route::any('/add/cart_/','CartContoller@addToCart_')->name('cart-add');
 Route::any('/review/', 'ReviewController@addReview')->name('add-review');

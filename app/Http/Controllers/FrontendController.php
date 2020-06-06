@@ -23,15 +23,27 @@ class FrontendController extends Controller
    	}
 
    	public function home(Request $request){
+   		//dd(session('cart'));
 		$title = 'Ecom Demo !Welcome | Home | Your online shopping platform';
 		$featured_products = $this->product->getFeaturedProduct();
 		$trending_products  = $this->product->getTrendingProduct();
    		//$parent_cats = $this->category->getParentCategory();
-		$all_products = $this->product->getAllProduct();
+		$all_products = $this->product->getAll();
 		//dd($all_products);
 		$offer = $this->offer->getAll();
 		$featured_collections = $this->category->getFeaturedCollection();
 		//dd($featured_collections);
+
+		$query_string = array();
+
+        if(isset($request->search)){
+            $query_string[] = "search=".$request->search;
+        }
+
+        if(isset($request->price)){
+            $query_string[] = "price=".$request->price;
+        }
+
 		
 	   		//dd($cart);
 		   return view('frontend.home')
@@ -41,9 +53,11 @@ class FrontendController extends Controller
 			   ->with('all_products',$all_products)
 			   ->with('offers',$offer)
 			   ->with('title',$title)
-			   ->with('featured_collections',$featured_collections);
+			   ->with('featured_collections',$featured_collections)
+			   ->with('query_string', implode('&',$query_string));
 			   //->with('cart',$cart);
 	}
+
 	   
 	public function productDetail($slug){
 		$prod_detail = $this->product->getProductDetail($slug);
@@ -62,18 +76,30 @@ class FrontendController extends Controller
 						   ->with('title',$prod_detail->name);
 	}
 
-	public function shopByCategory($slug){
+	public function shopByCategory($slug,Request $request){
 	   	$category = $this->category->where('slug',$slug)->first();
 		   $product = $this->product->getProductByCategory($category->id);
-		   if(!empty($product)){
-		   	 return view('frontend.category-shop')
-		   	 		->with('products',$product)
-		   	 		->with('title',$category->title. '| Ecomm. An online shopping store')
-		   	 		->with('category',$category);
-		   }
-		   else{
-		   	 return 'Products are not found for this category';
-		   }
+		   $query_string = array();
+
+	        if(isset($request->search)){
+	            $query_string[] = "search=".$request->search;
+	        }
+
+	        if(isset($request->price)){
+	            $query_string[] = "price=".$request->price;
+	        }
+
+
+			   if(!empty($product)){
+			   	 return view('frontend.category-shop')
+			   	 		->with('products',$product)
+			   	 		->with('title',$category->title. '| Ecomm. An online shopping store')
+			   	 		->with('category',$category)
+			   	 		->with('query_string', implode('&',$query_string));
+			   }
+			   else{
+			   	 return 'Products are not found for this category';
+			   }
 		   
 	}
 
@@ -139,5 +165,41 @@ class FrontendController extends Controller
 
 	   public function about(Request $request){
 	   	
+	   }
+
+	   public function showCart(Request $request){
+	   		$cart = session('cart');
+	   	 	return view('frontend.cart')->with('cart',$cart)->with('title', 'My Cart');
+	   }
+
+	   public function getSearchResults(Request $request){
+	   	  $all_products = $this->product->getSearchResults($request);
+	   	  $query_string = array();
+
+	        if(isset($request->search)){
+	            $query_string[] = "search=".$request->search;
+	        }
+
+	        if(isset($request->price)){
+	            $query_string[] = "price=".$request->price;
+	        }
+	        $view = 'frontend.search-results';
+
+	        //dd($all_products);
+
+	        if(isset($request->category)){
+	        	$category = $this->category->where('slug',$request->category)->first();
+	        	return view('frontend.category-shop')
+			   	 		->with('products',$all_products)
+			   	 		->with('title',$category->title. ' | Search Results | Ecomm. An online shopping store')
+			   	 		->with('category',$category)
+			   	 		->with('query_string', null);
+	        }else{
+	        	return view($view)
+	   	 		->with('products',$all_products)
+	   	 		->with('title',' | Search Results | Ecomm. An online shopping store')
+	   	 		->with('query_string', implode('&',$query_string));
+	        }
+	   	 	
 	   }
 }

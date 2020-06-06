@@ -32,7 +32,7 @@
                     </button>
                 </div>
 
-                <div class="flex-w flex-c-m m-tb-10">
+                    <div class="flex-w flex-c-m m-tb-10">
                     <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
                         <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
                         <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
@@ -92,14 +92,15 @@
                                     </a>
                                 </li>
                                 -->
+
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.(isset($query_string) ? $query_string : '')."&sort=low-high"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&sort=low-high") }}" class="filter-link stext-106 trans-04">
                                         Price: Low to High
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.(isset($query_string) ? $query_string : '')."&sort=high-low"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&sort=high-low") }}" class="filter-link stext-106 trans-04">
                                         Price: High to Low
                                     </a>
                                 </li>
@@ -119,25 +120,25 @@
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.(isset($query_string) ? $query_string : '')."&price=0-1000"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&price=0-1000") }}" class="filter-link stext-106 trans-04">
                                         Rs 0.00 - Rs 1000.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.$query_string."&price=1000-10000"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&price=1000-10000") }}" class="filter-link stext-106 trans-04">
                                         Rs 1000.00 - Rs 10000.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.$query_string."&price=10000-50000"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&price=10000-50000") }}" class="filter-link stext-106 trans-04">
                                         Rs 10000.00 - Rs 50000.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="{{ url('/search?'.$query_string."&price=50000-100000"."&category=$category->slug") }}" class="filter-link stext-106 trans-04">
+                                    <a href="{{ url('/search?'.$query_string."&price=50000-100000") }}" class="filter-link stext-106 trans-04">
                                         Rs 50000.00 - Rs 100000.00
                                     </a>
                                 </li>
@@ -245,7 +246,7 @@
                                 </a>
                             </div>
                         </div>
-                    -->
+                        -->
                     </div>
                 </div>
             </div>

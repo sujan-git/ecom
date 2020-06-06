@@ -39,9 +39,16 @@
  
 <body class="animsition">
      @php
-                    $qty = 0;
-                    
-                @endphp
+        $qty = 0;           
+    @endphp
+    @if(session('cart'))
+    @foreach(session('cart') as $cart)
+        @php
+            $qty += $cart['quantity'];
+        @endphp
+    @endforeach
+    @endif
+
 
    <!-- Header -->
     <header class="header-v4">
@@ -129,10 +136,11 @@
                         <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
                             <i class="zmdi zmdi-search"></i>
                         </div>
-
+                        <a href="{{route('view-cart')}}">
                         <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="{{$qty}}">
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </div>
+                    </a>
 
                         <a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
                             <i class="zmdi zmdi-favorite-outline"></i>
@@ -154,10 +162,11 @@
                 <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
                     <i class="zmdi zmdi-search"></i>
                 </div>
-
-                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="2">
+                <a href="{{route('view-cart')}}">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{$qty}}">
                     <i class="zmdi zmdi-shopping-cart"></i>
                 </div>
+            </a>
 
                 <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
                     <i class="zmdi zmdi-favorite-outline"></i>
@@ -252,7 +261,7 @@
                     <img src="images/icons/icon-close2.png" alt="CLOSE">
                 </button>
 
-                <form class="wrap-search-header flex-w p-l-15">
+                <form class="wrap-search-header flex-w p-l-15" method="GET" action="{{route('search')}}">
                     <button class="flex-c-m trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </button>
@@ -262,7 +271,7 @@
         </div>
     </header>
     <!-- Cart -->
-    <div class="wrap-header-cart js-panel-cart">
+    <!--<div class="wrap-header-cart js-panel-cart">
         <div class="s-full js-hide-cart"></div>
 
         <div class="header-cart flex-col-l p-l-65 p-r-25">
@@ -327,7 +336,7 @@
             
             @endif
         </div>
-    </div>
+    </div>-->
 
 
     @yield('content')

@@ -34,7 +34,7 @@
                     
                     <!-- Logo desktop -->       
                     <a href="#" class="logo">
-                        <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+                        <img src="{{asset('frontend/images/icons/logo-01.png')}}" alt="IMG-LOGO">
                     </a>
 
                     <!-- Menu desktop -->
