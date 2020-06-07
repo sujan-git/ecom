@@ -19,14 +19,16 @@ class UsersTableSeeder extends Seeder
                 //'adress'=>'Bharatpur',
                 'email'=>'admin@myblog.com',
                 'role'=>'admin',
-                'password'=>Hash::make('meroblog2076')
+                'password'=>Hash::make('meroblog2076'),
+                'phone'=>'9845612577'
             ),
             array(
                 'name'=>'blogger1',
                 //'adress'=>'Kathmandu',
                 'email'=>'blogger@meroblog.com',
                 'role'=>'blogger',
-                'password'=>Hash::make('blogger2076')
+                'password'=>Hash::make('blogger2076'),
+                'phone'=>'9845612577'
             )
         );
         foreach($array as $key=>$value){
