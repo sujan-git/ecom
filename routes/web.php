@@ -41,8 +41,8 @@ Route::group(['prefix'=>'admin','middleware'=>['auth','admin']],function(){
 	Route::get('/index','PageController@admin')->name('admin-dashboard');
 	Route::group(['prefix'=>'category','middleware'=>'admin'],function(){
 		Route::get('/add','CategoryController@add')->name('category-add');
-		//Route::post('/post','CategoryController@store')->name('category-post');
-		Route::post('/post','ResizeController@resize')->name('category-post');
+		Route::post('/post','CategoryController@store')->name('category-post');
+		//Route::post('/post','ResizeController@resize')->name('category-post');
 		Route::get('/list','CategoryController@list')->name('category-list');
 		Route::get('/edit/{id}','CategoryController@edit')->name('category-edit');
 		Route::get('/delete/{id}','CategoryController@delete')->name('category-delete');
