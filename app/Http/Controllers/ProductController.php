@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Offers;
 use App\Product;
 use App\ProductImages;
 use App\Repositories\Category\CategoryRepository;
@@ -15,17 +16,20 @@ use Validator;
 
 class ProductController extends Controller
 {
-    public function __construct(ProductRepository $product,Category $model_cat,Product $model_prod, ProductImages $productimages){
+    public function __construct(ProductRepository $product,Category $model_cat,Product $model_prod, ProductImages $productimages,Offers $offer){
     	$this->product = $product;
         $this->model_prod = $model_prod;
         $this->model_cat = $model_cat;
         $this->productimage = $productimages;
+        $this->offer = $offer;
     }
 
     public function add(){
         $parent_cats = $this->model_cat->where('parent_id',NULL)->get();
+        $offers = $this->offer->where('status','active')->get();
     	return view('product.add')
-    		->with('parent_cats',$parent_cats);
+    		->with('parent_cats',$parent_cats)
+            ->with('offers',$offers);
     }
 
     public function store(Request $request){   
@@ -34,21 +38,32 @@ class ProductController extends Controller
             'name' => 'required|string',
             'status' => 'string|in:active,inactive',
             'summary'=> 'sometimes|string',
+            'offer_id'=>'sometimes|integer|exists:offers,id|nullable',
             'parentcategory_id'=>'required|integer|exists:categories,id',
             'summary'=>'sometimes|string',
             'description'=>'sometimes|string',
             'price'=>'required|numeric',
             'discount_price'=>'sometimes|numeric',
-            'childcategory_id'=>'sometimes|integer|exists:categories,parent_id',
-            'thumb_image' => 'image|max:5000|nullable',
+            'childcategory_id'=>'sometimes|integer|exists:categories,parent_id|nullable',
+            'thumb_image' => 'sometimes|image|max:5000|nullable',
             'image_name.*' => 'sometimes|image|max:5000',
             'is_featured'=>'sometimes|in:yes',
             'is_discountable'=>'sometimes|in:yes',
             'is_trending'=>'sometimes|in:yes',
+            'is_offered'=>'sometimes|in:yes',
+            
         ]);
         //dd($validate);
         if($validate->fails()){
-            return 'Validation Unsuccessful';
+            //$errors = $validate->errors()->all();
+            //dd($errors);
+            // return redirect()->back()->with('errors',$errors);
+            $errors =  $validate->messages();
+
+           // return redirect()->back()->with('errors',$errors);
+           // dd($errors);
+            \Session::flash('error','Problem in saving Product'); 
+            return redirect()->back()->with('errors',$errors);
         }
         $file_name = $this->resizeandSaveThumbImage($request,$prod_info =null);
         if($file_name){
@@ -131,16 +146,19 @@ class ProductController extends Controller
     }
 
     public function list(){
-        $product = $this->model_prod->getAll();
+        $product = $this->product->getAll();
         //dd($product);
+        
         return view('product.list')->with('product',$product);
     }
 
     public function edit($id){
         $product = $this->model_prod->findProductById($id);
         //dd($product);
+        $offers = $this->offer->where('status','active')->get();
         $parent_cats = $this->model_cat->where('parent_id',NULL)->get();
-        return view( 'product.edit' )->with('product',$product)->with('parent_cats',$parent_cats);
+        //$offers = $this->
+        return view( 'product.edit' )->with('product',$product)->with('parent_cats',$parent_cats)->with('offers',$offers);
     }
 
     public function delete($id){
@@ -176,7 +194,7 @@ class ProductController extends Controller
             'is_discountable'=>'sometimes|in:yes',
             'is_trending'=>'sometimes|in:yes',
         ]);
-        //dd($validate);
+        
         if($validate->fails()){
             return 'Validation Unsuccessful';
         }

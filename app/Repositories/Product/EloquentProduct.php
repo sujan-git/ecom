@@ -19,7 +19,7 @@ class EloquentProduct implements ProductRepository{
 
 	 public function getAll()
     {
-        return $this->product->all();
+        return $this->product->get();
     }
 
     public function getById($id){
@@ -29,7 +29,17 @@ class EloquentProduct implements ProductRepository{
     public function create(array $attributes){
          $attributes['slug'] = $this->product->getSlug($attributes['name']);
          //dd($attributes);
-         $product = $this->product->create($attributes);
+
+         
+        if(isset($attributes['is_offered'])){
+           if($attributes['offer_id'] == ''){
+                $attributes['offer_id'] = null;
+           }
+        }else{
+            $attributes['offer_id'] = null;
+        }
+
+        $product = $this->product->create($attributes);
 
           return $product->id; 
     }
@@ -42,6 +52,13 @@ class EloquentProduct implements ProductRepository{
         $product = $this->getById($id);
         $attributes['slug'] = $this->product->getSlug($attributes['name']);
         //dd($attributes);
+        if(isset($attributes['is_offered'])){
+           if($attributes['offer_id'] == ''){
+                $attributes['offer_id'] == null;
+           }
+        }else{
+            $attributes['offer_id'] = null;
+        }
         $product->update($attributes);
         //dd($product);
         return $product->id;

@@ -30,6 +30,7 @@ Route::get('/blog', 'FrontendController@blog')->name('blog');
 Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/cart', 'FrontendController@showCart')->name('view-cart');
 Route::get('/search', 'FrontendController@getSearchResults')->name('search');
+Route::get('/offer/{slug}', 'FrontendController@shopOfferItems')->name('offer-shop');
 
 
 

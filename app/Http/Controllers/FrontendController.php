@@ -172,6 +172,24 @@ class FrontendController extends Controller
 	   	 	return view('frontend.cart')->with('cart',$cart)->with('title', 'My Cart');
 	   }
 
+	   public function shopOfferItems(Request $request){
+	   	 $offer_id = (Offers::where('slug',$request->slug)->first())->id;
+	   	 $offered_products = $this->product->getOfferProduct($offer_id);
+	   	 $query_string = array();
+
+        if(isset($request->search)){
+            $query_string[] = "search=".$request->search;
+        }
+
+        if(isset($request->price)){
+            $query_string[] = "price=".$request->price;
+        }
+	   	return view('frontend.search-results')
+	   	 		->with('products',$offered_products)
+	   	 		->with('title',' Grab Offer | Ecomm. An online shopping store')
+	   	 		->with('query_string', implode('&',$query_string));
+	   }
+
 	   public function getSearchResults(Request $request){
 	   	  $all_products = $this->product->getSearchResults($request);
 	   	  $query_string = array();

@@ -8,7 +8,7 @@ use App\ProductImages;
 
 class Product extends Model
 {
-    protected $fillable = ['name','status','summary','slug','discount_price','parentcategory_id','childcategory_id','is_featured','is_trending','is_discountable','tax_percent','description','thumb_image','price'];
+    protected $fillable = ['name','status','summary','slug','discount_price','parentcategory_id','childcategory_id','is_featured','is_trending','is_discountable','tax_percent','description','thumb_image','price','offer_id'];
 
     public function getRules(){
     	return [
@@ -100,6 +100,10 @@ class Product extends Model
         return $this->with('product_images')->where('parentcategory_id',$id)->get();
     }
 
+
+    public function getOfferProduct($id){
+         return $this->with('product_images')->with('parent_category')->with('child_category')->where('offer_id',$id)->get();
+    }
     public function getSearchResults($request){
          /***
          *  SELECT * FROM products WHERE 

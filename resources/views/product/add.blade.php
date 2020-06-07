@@ -10,6 +10,20 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
+                     <div class="title_left">
+                      @if($message = Session::get('success'))
+                       <div class="alert alert-success alert-block">
+                          <button type="button" class="close" data-dismiss="alert">×</button> 
+                             <strong>{{ $message }}</strong>
+                       </div>
+                      @elseif($message = Session::get('error'))
+                       <div class="alert alert-danger alert-block">
+                          <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                       </div>
+                       @endif
+                       
+                     </div>
                     <h2>Product Information</h2>
                       <a href="{{route('product-list')}}"><button type="button" class="btn btn-primary">
                       <span class="glyphicon glyphicon-th-list"></span> List All</button></a>
@@ -23,7 +37,11 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="name" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="name" placeholder="" required="required" type="text">
+                          @if(isset($errors) && $errors->has('name'))
+                              <strong style="color:red">{{ $errors->first('name') }}</strong>
+                           @endif
                         </div>
+                        
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Status<span class="required">*</span></label>
@@ -32,7 +50,11 @@
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                           </select>
+                          @if(isset($errors) && $errors->has('status'))
+                              <strong style="color:red">{{ $errors->first('status') }}</strong>
+                           @endif
                         </div>
+                        
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Featured</label>
@@ -42,8 +64,44 @@
                               <input type="checkbox"  id="" value="yes" name="is_featured">
                             </label>
                           </div>
+                          @if(isset($errors) && $errors->has('is_featured'))
+                              <strong style="color:red">{{ $errors->first('is_featured') }}</strong>
+                           @endif
                         </div>
+                        
                       </div>
+
+                       <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Offered</label>
+                        <div class="col-md-6 col-sm-9 col-xs-12">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"  id="offer" value="yes" name="is_offered">
+                            </label>
+                          </div>
+                          @if(isset($errors) && $errors->has('offer_id'))
+                              <strong style="color:red">{{ $errors->first('offer_id') }}</strong>
+                           @endif
+                        </div>
+                       
+                      </div>
+
+                      <div class="item form-group" id="offer_selection">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Offer </label>
+                        <div class="col-md-6 col-sm-9 col-xs-12">
+                          <select class="form-control" name="offer_id" id="parent">
+                            <option value = "">--Select Offer--</option>
+                            @if(isset($offers))
+                            @foreach($offers as $offer)
+                            <option value="{{$offer->id}}">{{$offer->title}}</option>
+                            @endforeach
+                             @endif
+                          </select>
+                           
+                        </div> 
+                      </div>
+
+
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Trending<span class="required">*</span></label>
                         <div class="col-md-6 col-sm-9 col-xs-12">
@@ -51,37 +109,53 @@
                             <label>
                               <input type="checkbox"  id="" value="yes" name="is_trending">
                             </label>
+                             @if(isset($errors) && $errors->has('is_trending'))
+                              <strong style="color:red">{{ $errors->first('is_trending') }}</strong>
+                           @endif
                           </div>
                         </div>
+                       
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Product Price<span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input name="price" class="form-control col-md-7 col-xs-12" required="required" type="number" id="price_prod">
+                          @if(isset($errors) && $errors->has('price'))
+                              <strong style="color:red">{{ $errors->first('price') }}</strong>
+                           @endif
                         </div>
+                        
                       </div>
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tax %
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <input id="tax_percent" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="tax_percent" placeholder=""  type="number" min="1" placeholder="Mention % value" name="tax_percent">
+                          @if(isset($errors) && $errors->has('tax_percent'))
+                              <strong style="color:red">{{ $errors->first('tax_percent') }}</strong>
+                           @endif
                         </div>
+                        
                       </div>
 
                       <div class="item form-group" id="parent_cats">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Product Category</label>
                         <div class="col-md-6 col-sm-9 col-xs-12">
                           <select class="form-control" name="parentcategory_id" id="parent">
-                            <option value="active">--Select Any One Parent Category--</option>
+                            <option value="">--Select Any One Parent Category--</option>
                             @if(isset($parent_cats))
                             @foreach($parent_cats as $parent)
                             <option value="{{$parent->id}}">{{$parent->title}}</option>
                             @endforeach
                              @endif
                           </select>
+                          @if(isset($errors) && $errors->has('parentcategory_id'))
+                              <strong style="color:red">{{ $errors->first('parentcategory_id') }}</strong>
+                           @endif
                         </div>
                       </div>
+                       
 
                       <div class="item form-group" id="">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Child Category</label>
@@ -89,6 +163,9 @@
                           <select class="form-control" name="childcategory_id" id="child_cats">
                             
                           </select>
+                          @if(isset($errors) && $errors->has('childcategory_id'))
+                              <strong style="color:red">{{ $errors->first('childcategory_id') }}</strong>
+                           @endif
                         </div>
                       </div>
 
@@ -99,6 +176,9 @@
                             <label>
                               <input type="checkbox" value="yes" id=""  name="is_discountable">
                             </label>
+                            @if(isset($errors) && $errors->has('is_discountable'))
+                              <strong style="color:red">{{ $errors->first('is_discountable') }}</strong>
+                           @endif
                           </div>
                         </div>
                       </div>
@@ -118,6 +198,9 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <textarea id="textarea"  name="summary" class="form-control col-md-7 col-xs-12"></textarea>
+                          @if(isset($errors) && $errors->has('summary'))
+                              <strong style="color:red">{{ $errors->first('summary') }}</strong>
+                           @endif
                         </div>
                       </div>
 
@@ -126,6 +209,9 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <textarea id="textarea"  name="description" class="form-control col-md-7 col-xs-12"></textarea>
+                          @if(isset($errors) && $errors->has('description'))
+                              <strong style="color:red">{{ $errors->first('description') }}</strong>
+                           @endif
                         </div>
                       </div>
 
@@ -135,6 +221,9 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           	<input type="file" name="thumb_image" onchange = "readUrl(this, 'main_thumb')">
                             <img src="" alt="" id="main_thumb"> 
+                            @if(isset($errors) && $errors->has('thumb_image'))
+                              <strong style="color:red">{{ $errors->first('thumb_image') }}</strong>
+                           @endif
                         </div>                           
                       </div>
 
@@ -144,6 +233,9 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="file" name="image_name[]" accept="image/*" multiple id="files">
+                            @if(isset($errors) && $errors->has('images_name'))
+                              <strong style="color:red">{{ $errors->first('images_name') }}</strong>
+                           @endif
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <output id="result" />
@@ -242,65 +334,6 @@
           }
       }
   </script>
-    <script>
-  window.onload = function(){   
-    //Check File API support
-    if(window.File && window.FileList && window.FileReader)
-    {
-        $('#files').on("change", function(event) {
-            var files = event.target.files; //FileList object
-            var output = document.getElementById("result");
-            for(var i = 0; i< files.length; i++)
-            {
-                var file = files[i];
-                //Only pics
-                // if(!file.type.match('image'))
-                if(file.type.match('image.*')){
-                    if(this.files[0].size < 2097152){    
-                  // continue;
-                    var picReader = new FileReader();
-                    picReader.addEventListener("load",function(event){
-                        var picFile = event.target;
-                        var div = document.createElement("div");
-                        div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
-                                "title='preview image'/>";
-                        output.insertBefore(div,null);            
-                    });
-                    //Read the image
-                    $('#clear, #result').show();
-                    picReader.readAsDataURL(file);
-                    }else{
-                        alert("Image Size is too big. Minimum size is 2MB.");
-                        $(this).val("");
-                    }
-                }else{
-                alert("You can only upload image file.");
-                $(this).val("");
-            }
-            }                               
-           
-        });
-    }
-    else
-    {
-        console.log("Your browser does not support File API");
-    }
-    }
-
-   $('#files').on("click", function() {
-        $('.thumbnail').parent().remove();
-        $('result').hide();
-        $(this).val("");
-    });
-
-    $('#clear').on("click", function() {
-        $('.thumbnail').parent().remove();
-        $('#result').hide();
-        $('#files').val("");
-        $(this).hide();
-    });
-  </script>
-  <script>
-  </script>
-
+   <script src="{{asset('backend/customjs/offer.js')}}"></script>
+   
 @endsection

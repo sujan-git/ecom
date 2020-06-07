@@ -44,6 +44,38 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Offered</label>
+                        <div class="col-md-6 col-sm-9 col-xs-12">
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox"  id="offer" value="yes" name="is_offered" {{@($product->offer_id != null)?'checked':''}}>
+                            </label>
+                          </div>
+                          @if(isset($errors) && $errors->has('offer_id'))
+                              <strong style="color:red">{{ $errors->first('offer_id') }}</strong>
+                           @endif
+                        </div>
+                       
+                      </div>
+
+                      <div class="item form-group" id="offer_selection">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Offer </label>
+                        <div class="col-md-6 col-sm-9 col-xs-12">
+                          <select class="form-control" name="offer_id" id="parent">
+                            <option value = "">--Select Offer--</option>
+                            @if(isset($offers))
+                            @foreach($offers as $offer)
+                            <option value="{{$offer->id}}" {{(@$product->offer_id == $offer->id)?"selected":''}}>{{$offer->title}}</option>
+                            @endforeach
+                             @endif
+                          </select>
+                           
+                        </div> 
+                      </div>
+
+
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Trending<span class="required">*</span></label>
                         <div class="col-md-6 col-sm-9 col-xs-12">
@@ -291,7 +323,7 @@
         
   })
   </script>
-
+<script src="{{asset('backend/customjs/offer.js')}}"></script>
 
 
 @endsection

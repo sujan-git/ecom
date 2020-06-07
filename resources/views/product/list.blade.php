@@ -34,9 +34,6 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                      DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
-                    </p>
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
@@ -87,6 +84,8 @@
 
 @endsection
 @section('script')
+<script src="{{asset('backend/vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script>$().DataTable()</script>
 <script type="text/javascript">
   setTimeout(function(){
       $("#session_info").fadeOut("slow");

@@ -17,18 +17,19 @@
                                 
                             <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
                                 <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                   {{$offer->title}}
+                                   <a href="{{route('offer-shop',$offer->slug)}}">{{$offer->title}}</a>
                                 </h2>
                             </div>
                                 
                             <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-                                <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                <a href="{{route('offer-shop',$offer->slug)}}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
                                     Shop Now
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
+           
                 @endforeach
                 
             </div>
